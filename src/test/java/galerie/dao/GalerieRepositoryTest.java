@@ -1,3 +1,4 @@
+
 package galerie.dao;
 
 import galerie.entity.Galerie;
@@ -26,6 +27,15 @@ public class GalerieRepositoryTest {
         int combienDansLeJeuDeTest = 1; 
         long nombre = galerieDAO.count();
         assertEquals(combienDansLeJeuDeTest, nombre, "On doit trouver 1 galerie" );
+    }
+    
+    @Test
+    @Sql("test-data.sql")
+    public void CAannuel () {
+        float PrixDansLeJeuDeTest = 0; 
+        Galerie g = galerieDAO.getOne(1);
+        float CA = g.CAannuel(2010) ; 
+        assertEquals(PrixDansLeJeuDeTest, CA , "On n'a pas un CA de 0 euro");
     }
 
 }

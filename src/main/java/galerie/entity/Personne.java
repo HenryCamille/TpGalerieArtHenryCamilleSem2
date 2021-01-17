@@ -9,35 +9,38 @@ import java.time.LocalDate;
 // cf. https://examples.javacodegeeks.com/spring-boot-with-lombok/
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @ToString
 @Entity // Une entité JPA
-public class Galerie {
+@Inheritance (strategy = InheritanceType.JOINED)
+
+
+public class Personne {
     @Id  @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Integer id;
-
+    
     @Column(unique=true)
     @NonNull
     private String nom;
-    
+
     @Column(unique=true)
     @NonNull
     private String adresse;
     
-    @OneToMany (mappedBy = "organisateur")
-    private List<Exposition> evenements = new LinkedList<>();
+    
+    @OneToMany (mappedBy = "client")
+    private List<Transaction> achats = new LinkedList<>();
     
     
     
-    public float CAannuel (int annee) {
-        
-    float ChiffreAffAnnuel = 0 ;
-    
-        for (Exposition e : evenements) { 
-            LocalDate AnneeEvenement = e.getDebut().plusDays(e.getDuree());
-            if (AnneeEvenement.getYear() == annee) {
-                ChiffreAffAnnuel += e.CA();
-            } 
+     public float budgetArt (int annee) {
+        float budgetArtAnnuel = 0 ; 
+        for (Transaction t : achats) {
+            if (t.getVenduLe().getYear() == annee) {
+                budgetArtAnnuel += t.getPrixVente() ; 
+            }
         }
-        return ChiffreAffAnnuel ; 
+        return budgetArtAnnuel ; 
     }
     
-    // TODO : Mettre en oeuvre la relation oneToMany vers Exposition
+
+    
+    
 }
